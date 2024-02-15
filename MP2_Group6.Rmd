@@ -17,11 +17,8 @@ The purpose of this mini project was to examine the force output and maximum loa
 
 
 #Methods
-
 Bicep muscle mass (Mmuscle) was estimated by shaping plato to the size of the bicep and weighing the plato model. Plato's density is similar to that of muscle. Arm length (Larm), Inlever length (Li), and Outlever length (Li) were obtained for each participant using a meter stick. Using the skeletal geometry of the human forelimb and the previously recorded measurements,  Muscle lengths (Lmuscle) at each flexion angle and Muscle insertion angle at each flexion angle(θ) were calculated. Finally, an R function was created using previously measured or calculated parameters to determine muscle torque (muscle_torque) and the maximum amount of mass that could be theoretically curled at each angle (max_mass).
 
-
-```
 
 ```{r data, message=FALSE, echo=FALSE, warning=FALSE, results = FALSE}
 dat1 <- tibble(
@@ -129,14 +126,16 @@ dat_with_torque <- dat_with_torque %>%
 print(dat_with_torque)
 ```
 
-In the following table predicted Tmuscle and Mload values for each flexion angle are provided. 
-```{r}
+#Results
+
+#In the following table predicted Tmuscle and Mload values for each flexion angle are provided. 
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
 kable(dat_with_torque, caption = "predicted τmuscle and Mload values at each flexion angle")
 ```
 
 
-
-```{r}
+Graphs representing the relationship between flexion angle in degrees with muscle torque and maximum load 
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
 ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = muscle_torque, color = Person)) +
   geom_line() +
   labs(x = "Flexion Angle (degrees)", y = "Muscle Torque (Nm)", title = "Muscle Torque Across Flexion Angles") +
@@ -150,7 +149,7 @@ ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = max_mass, color = Person
   scale_color_brewer(palette = "Set1")
 ```
 
-#Results
+#Discussion
 The largest maximum load was obtained for each participant at an angle of 75 degrees. These findings suggest that at a 75 degree angle the bicep is near its optimal length where the greatest number of cross-bridges can be formed. As seen in the graph, as the flexion angle increases (>75 degrees) the maximum load decreases. This is consistent with expectations given that as the angle of the joint increases, the bicep muscle length increases and the amount of torque it can produce decreases. 
 
 
