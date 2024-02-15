@@ -4,9 +4,20 @@ author: "Michael Bevilacqua, Colin Flaherty, Phil Kaplan"
 date: "2024-02-15"
 output: html_document
 ---
+#Introduction 
+The purpose of this mini project was to examine the force output and maximum load that can be supported by the forelimb. Skeletal geometry and measured parameters including muscle length and mass were used to create a model to predict the force and torque produced by the human bicep over a range of provided extension/flexion angles. The predicted maximum mass that can be curled according to the model was tested in the gym to assess validity of the model. Insert some studies with relevant findings. 
+
+
+#Methods
+
+Bicep muscle mass (Mmuscle) was estimated by shaping plato to the size of the bicep and weighing the plato model. Plato's density is similar to that of muscle. Arm length (Larm), Inlever length (Li), and Outlever length (Li) were obtained for each participant using a meter stick. Using the skeletal geometry of the human forelimb and the previously recorded measurements,  Muscle lengths (Lmuscle) at each flexion angle and Muscle insertion angle at each flexion angle(θ) were calculated. Finally, an R function was created using previously measured or calculated parameters to determine muscle torque (muscle_torque) and the maximum amount of mass that could be theoretically curled at each angle (max_mass).
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(ggplot2)
+library(knitr)
 ```
 
 ```{r functions, message=FALSE, echo=FALSE, warning=FALSE}
@@ -20,7 +31,7 @@ dat1 <- tibble(
 print(dat1)
 ```
 
-```{r}
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
 #Writing Needed Functions 
 
 #Insertion angles
@@ -46,7 +57,7 @@ ffl <- function(Lmuscle, Lmuscler) {
 PCSA <- function(Mmuscle, phi, Lmuscler) {
   Mmuscle * cos(phi) / (rho * Lmuscler)
 }
-
+PCSA
 
 ```
 
@@ -67,11 +78,9 @@ model <- function(mass, Lmuscler, Lmuscle, theta, Lo, rho = 0.00105, k = 80) {
   
   return(torque)
 }
-
-
 ```
 
-```{r}
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
 
 flexion_angles <- c(50, 75, 100, 125, 150) * pi / 180
 
@@ -115,9 +124,23 @@ dat_with_torque <- dat_with_torque %>%
 
 
 print(dat_with_torque)
-
-
-ggplot(dat_with_torque, aes(x = flexion, y = max_mass, color = Person, group = Person)) +
-  geom_line() + geom_point() + labs(x = "Flexion", y = "Maximum Mass", title = "Maximum Mass at Varying Flexion") +  
-  scale_color_manual(values = c("red", "blue", "green"))
 ```
+
+In the following table predicted Tmuscle and Mload values for each flexion angle are provided. 
+```{r}
+kable(dat_with_torque, caption = "predicted τmuscle and Mload values at each flexion angle")
+```
+
+```{r}
+library(ggplot2)
+ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = muscle_torque, color = Person)) +
+  geom_line() +
+  labs(x = "Flexion Angle (degrees)", y = "Muscle Torque (Nm)", title = "Muscle Torque Across Flexion Angles") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = max_mass, color = Person)) +
+  geom_line() +
+  labs(x = "Flexion Angle (degrees)", y = "Maximum Load (kg)", title = "Maximum Load Across Flexion Angles") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
