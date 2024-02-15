@@ -3,6 +3,7 @@ title: "MP2"
 author: "Michael Bevilacqua, Colin Flaherty, Phil Kaplan"
 date: "2024-02-15"
 output: html_document
+bibliography: BIOL5380.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -12,11 +13,11 @@ library(ggplot2)
 library(knitr)
 ```
 
-#Introduction 
+# Introduction 
 The purpose of this mini project was to examine the force output and maximum load that can be supported by the forelimb. Skeletal geometry and measured parameters including muscle length and mass were used to create a model to predict the force and torque produced by the human bicep over a range of provided extension/flexion angles. The predicted maximum mass that can be curled according to the model was tested in the gym to assess validity of the model. Insert some studies with relevant findings. 
 
 
-#Methods
+# Methods
 Bicep muscle mass (Mmuscle) was estimated by shaping plato to the size of the bicep and weighing the plato model. Plato's density is similar to that of muscle. Arm length (Larm), Inlever length (Li), and Outlever length (Li) were obtained for each participant using a meter stick. Using the skeletal geometry of the human forelimb and the previously recorded measurements,  Muscle lengths (Lmuscle) at each flexion angle and Muscle insertion angle at each flexion angle(θ) were calculated. Finally, an R function was created using previously measured or calculated parameters to determine muscle torque (muscle_torque) and the maximum amount of mass that could be theoretically curled at each angle (max_mass).
 
 
@@ -126,9 +127,9 @@ dat_with_torque <- dat_with_torque %>%
 print(dat_with_torque)
 ```
 
-#Results
+# Results
 
-#In the following table predicted Tmuscle and Mload values for each flexion angle are provided. 
+In the following table predicted Tmuscle and Mload values for each flexion angle are provided. 
 ```{r, message=FALSE, echo=FALSE, warning=FALSE}
 kable(dat_with_torque, caption = "predicted τmuscle and Mload values at each flexion angle")
 ```
@@ -149,7 +150,14 @@ ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = max_mass, color = Person
   scale_color_brewer(palette = "Set1")
 ```
 
-#Discussion
-The largest maximum load was obtained for each participant at an angle of 75 degrees. These findings suggest that at a 75 degree angle the bicep is near its optimal length where the greatest number of cross-bridges can be formed. As seen in the graph, as the flexion angle increases (>75 degrees) the maximum load decreases. This is consistent with expectations given that as the angle of the joint increases, the bicep muscle length increases and the amount of torque it can produce decreases. The predicted maximum mass for Colin was 53.03253 kg which is inconsistent with his true maximum found in the gym of 23.8136 kg. The predicted maximum mass for Michael was 70.76970 kg which is inconsistent with his true maximum found in the gym of 27.2155 kg. These inconsistencies are unlikely to be the result of a faulty model but is instead procedural error. Given the equipment provided (dumbell), it is impossible to begin the curl at the intended angle (75 degrees) therefore the maximums obtained in the gym are more representative of significantly greater flexion angles. 
+# Discussion
+The largest maximum load was obtained for each participant at an angle of 75 degrees. These findings suggest that at a 75 degree angle the bicep is near its optimal length where the greatest number of cross-bridges can be formed. As seen in the graph, as the flexion angle increases (>75 degrees) the maximum load decreases. This is consistent with expectations given that as the angle of the joint increases, the bicep muscle length increases and the amount of torque it can produce decreases. The predicted maximum mass for Colin was 53.03253 kg which is inconsistent with his true maximum found in the gym of 23.8136 kg. The predicted maximum mass for Michael was 70.76970 kg which is inconsistent with his true maximum found in the gym of 27.2155 kg. These inconsistencies are unlikely to be the result of a faulty model but is instead procedural error. Given the equipment provided (dumbell), it is impossible to begin the curl at the intended angle (75 degrees) therefore the maximums obtained in the gym are more representative of significantly greater flexion angles. A similar study states that "the elbow torque would also show a peak at an intermediate angle provided the activity of the flexor muscles remained constant" @hasan1985there. Another study states "Human movement is produced by muscles that generate torque around joints. Muscle force (MF) is related to its physiological cross-sectional area (PCSA) which is estimated from muscle volume (MV), fibre length (FL) and pennation angle (θ)." @fukunaga2001there. These sources tell us that the manner in which we conducted our formulas resulted in accurate predictions, however, the methods in which we completed our tests in the gym were not able to provide us with correlating data. 
+
+# Author Contributions
+Phil:Code, Discussion, Intro
+Colin: Code, Methods, Intro, Results
+Michael: Code, Discussion, References
+
+# References
 
 
