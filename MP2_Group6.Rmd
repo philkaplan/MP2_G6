@@ -46,7 +46,7 @@ ffl <- function(Lmuscle, Lmuscler) {
 PCSA <- function(Mmuscle, phi, Lmuscler) {
   Mmuscle * cos(phi) / (rho * Lmuscler)
 }
-PCSA
+
 
 ```
 
@@ -115,4 +115,9 @@ dat_with_torque <- dat_with_torque %>%
 
 
 print(dat_with_torque)
+
+
+ggplot(dat_with_torque, aes(x = flexion, y = max_mass, color = Person, group = Person)) +
+  geom_line() + geom_point() + labs(x = "Flexion", y = "Maximum Mass", title = "Maximum Mass at Varying Flexion") +  
+  scale_color_manual(values = c("red", "blue", "green"))
 ```
