@@ -131,6 +131,8 @@ In the following table predicted Tmuscle and Mload values for each flexion angle
 kable(dat_with_torque, caption = "predicted τmuscle and Mload values at each flexion angle")
 ```
 
+
+
 ```{r}
 library(ggplot2)
 ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = muscle_torque, color = Person)) +
@@ -144,3 +146,4 @@ ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = max_mass, color = Person
   labs(x = "Flexion Angle (degrees)", y = "Maximum Load (kg)", title = "Maximum Load Across Flexion Angles") +
   theme_minimal() +
   scale_color_brewer(palette = "Set1")
+```
