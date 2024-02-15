@@ -1,0 +1,118 @@
+---
+title: "MP2"
+author: "Michael Bevilacqua, Colin Flaherty, Phil Kaplan"
+date: "2024-02-15"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r functions, message=FALSE, echo=FALSE, warning=FALSE}
+dat1 <- tibble(
+ Person= c("Phil", "Colin", "Michael"),
+  Mmuscle = c(0.418, 0.252, 0.344),
+  Lo = c(0.320, 0.280, 0.320),
+  Li = c(0.080, 0.065, 0.080),
+  Larm = c(0.350, 0.31, 0.305)
+)
+print(dat1)
+```
+
+```{r}
+#Writing Needed Functions 
+
+#Insertion angles
+law_cos <- function(o, l, r) {
+  acos((-o^2 + l^2 + r^2) / (2 * l * r))
+}
+
+
+law_cos2 <- function(l, r, theta) {
+  sqrt(l^2 + r^2 - 2 * l * r * cos(theta))
+}
+
+#Establishing rho, k, and g 
+rho <- 0.00105
+k <- 80
+g <- 9.81 
+
+ffl <- function(Lmuscle, Lmuscler) {
+  -6.25 * ((Lmuscle / Lmuscler)^2) + 12.5 * (Lmuscle / Lmuscler) - 5.25
+}
+
+# Function to calculate PCSA and Fmax
+PCSA <- function(Mmuscle, phi, Lmuscler) {
+  Mmuscle * cos(phi) / (rho * Lmuscler)
+}
+PCSA
+
+```
+
+```{r functions, message=FALSE, echo=FALSE, warning=FALSE}
+model <- function(mass, Lmuscler, Lmuscle, theta, Lo, rho = 0.00105, k = 80) {
+  Lmuscler_cm <- Lmuscler * 100 
+  Lmuscle_cm <- Lmuscle * 100  
+  Lo_cm <- Lo * 100  
+  
+  pcsa <- PCSA(mass, 0, Lmuscler_cm) 
+  Fmax <- pcsa * k  
+  
+  ffl_value <- ffl(Lmuscle_cm, Lmuscler_cm * 0.8)  
+  
+  Fmuscle <- Fmax * ffl_value 
+  
+  torque <- Fmuscle * sin(theta) * Lo_cm 
+  
+  return(torque)
+}
+
+
+```
+
+```{r}
+
+flexion_angles <- c(50, 75, 100, 125, 150) * pi / 180
+
+dat_updated <- dat1 %>%
+  crossing(flexion = flexion_angles) %>%
+  mutate(
+    Lmuscle = law_cos2(Larm, Li, flexion),
+    theta = law_cos(Larm, Li, Lmuscle)
+  ) %>%
+  mutate(
+    Lmuscler = ifelse(flexion == (150 * pi / 180), Lmuscle, NA_real_)
+  )
+
+dat_with_torque <- dat_updated %>%
+  rowwise() %>%
+  mutate(
+    muscle_torque = model(Mmuscle, Lmuscler, Lmuscle, theta, Lo),
+    max_mass = muscle_torque / (Lo * 100 * g)
+  ) %>%
+  ungroup()
+
+print(dat_with_torque)
+
+#Finding Lmuscler
+reference_Lmuscler <- dat_with_torque %>%
+  filter(flexion == 150 * pi / 180) %>%
+  select(Person, Lmuscler) %>%
+  distinct()
+
+#Changing Lmuscler values across all rows belonging to each person
+dat_with_torque <- dat_with_torque %>%
+  left_join(reference_Lmuscler, by = "Person", suffix = c("", "_ref")) %>%
+  mutate(
+    Lmuscler = ifelse(is.na(Lmuscler), Lmuscler_ref, Lmuscler)
+  ) %>%
+  select(-Lmuscler_ref) %>%
+  mutate(
+    muscle_torque = model(Mmuscle, Lmuscler, Lmuscle, theta, Lo),
+    max_mass = muscle_torque / (Lo * 100 * g)
+  )
+
+
+print(dat_with_torque)
+```
