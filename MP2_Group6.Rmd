@@ -131,6 +131,8 @@ In the following table predicted Tmuscle and Mload values for each flexion angle
 kable(dat_with_torque, caption = "predicted τmuscle and Mload values at each flexion angle")
 ```
 
+
+
 ```{r}
 library(ggplot2)
 ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = muscle_torque, color = Person)) +
@@ -146,5 +148,4 @@ ggplot(dat_with_torque, aes(x = flexion * 180 / pi, y = max_mass, color = Person
   scale_color_brewer(palette = "Set1")
 ```
 
-# Results
-Through analysis of our predictions, we can see that at a flexion angle of about 75 degrees is where all three of our participants were predicted to move the max amount of weight. COnversely, we can see at double that angle, 150 degrees, which is full extension we see the smallest amount of weight predicted to move. This pattern is also followed when considering muscle torque at certain angles. Overall, looking at our plot above we can see a curve where an angle of 75 degrees is the prime angle to move the maximum amount of weight.
+Notably, at a 75 degree angle the largest maximum load was obtained for each participant. These findings suggest that at a 75 degree angle the bicep is near its optimal length where the greatest number of cross-bridges can be formed. As seen in the graph, as the flexion angle increases (>75 degrees) the maximum load decreases. This is consistent with expectations given that as the angle of the joint increases, the bicep muscle length increases and the amount of torque it can produce decreases. 
