@@ -23,7 +23,7 @@ Bicep muscle mass (Mmuscle) was estimated by shaping plato to the size of the bi
 
 ```
 
-```{r data, message=FALSE, echo=FALSE, warning=FALSE}
+```{r data, message=FALSE, echo=FALSE, warning=FALSE, results = FALSE}
 dat1 <- tibble(
  Person= c("Phil", "Colin", "Michael"),
   Mmuscle = c(0.418, 0.252, 0.344),
@@ -34,7 +34,7 @@ dat1 <- tibble(
 print(dat1)
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE}
+```{r, message=FALSE, echo=FALSE, warning=FALSE, results = FALSE}
 #Writing Needed Functions 
 
 #Insertion angles
@@ -64,7 +64,7 @@ PCSA
 
 ```
 
-```{r functions, message=FALSE, echo=FALSE, warning=FALSE}
+```{r functions, message=FALSE, echo=FALSE, warning=FALSE, results = FALSE}
 model <- function(mass, Lmuscler, Lmuscle, theta, Lo, rho = 0.00105, k = 80) {
   Lmuscler_cm <- Lmuscler * 100 
   Lmuscle_cm <- Lmuscle * 100  
@@ -83,7 +83,7 @@ model <- function(mass, Lmuscler, Lmuscle, theta, Lo, rho = 0.00105, k = 80) {
 }
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, results = 'hide' }
+```{r, message=FALSE, echo=FALSE, warning=FALSE, results = FALSE }
 
 flexion_angles <- c(50, 75, 100, 125, 150) * pi / 180
 
